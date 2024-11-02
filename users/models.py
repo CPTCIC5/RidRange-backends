@@ -9,6 +9,10 @@ class Division(models.Model):
     name= models.CharField(max_length=10)
 
 
+    def __str__(self):
+        return self.name
+
+
 class Subject(models.Model):
     name= models.CharField(max_length=100)
     code= models.CharField(max_length=8, unique=True)
@@ -34,7 +38,8 @@ class Semester(models.Model):
     subjects= models.ManyToManyField(Subject)
     
 
-    
+    def __str__(self):
+        return str(self.semester_number)
     
 
 class Courses(models.Model):
@@ -241,17 +246,13 @@ class ParentProfile(models.Model):
 
 
 
-# unique:   personal number, father's phone number and guardian roll number 
 # authenticate: aadhar, pan, phone(if possible), dob must be valid.
 # add: personal payment gateway on fee section, courses wise fee structure, add sem wise subjects of all courses while adding a course 
-"""
 class UserSemesterData(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
-    # Add fields for the data you want to track
     gpa = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
     credits_earned = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.user.username} - {self.semester.name}"
-"""

@@ -10,7 +10,7 @@ from rest_framework.decorators import action
 from django.contrib.auth.models import User
 from django.http import Http404
 from .models import Semester,Subject,Courses, PersonalProfile, AdmissionProfile, ContactInformationProfile, EducationQualificationProfile, ParentProfile
-from django.shortcuts import get_object_or_404,get_list_or_404
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 
 class LoginView(APIView):
@@ -184,6 +184,10 @@ class PersonalProfileViewSet(viewsets.ModelViewSet):
     queryset = PersonalProfile.objects.all()
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_queryset(self):
+        return get_object_or_404(PersonalProfile, profile=self.request.user.profile)
+
+
     def get_serializer_class(self):
         if self.action in ['create', 'update', 'partial_update']:
             return PersonalProfileCreateSerializer
@@ -197,6 +201,10 @@ class PersonalProfileViewSet(viewsets.ModelViewSet):
 class AdmissionProfileViewSet(viewsets.ModelViewSet):
     queryset = AdmissionProfile.objects.all()
     permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        return get_object_or_404(AdmissionProfile, profile=self.request.user.profile)
+
 
     def get_serializer_class(self):
         if self.action in ['create', 'update', 'partial_update']:
@@ -212,6 +220,9 @@ class ContactInformationProfileViewSet(viewsets.ModelViewSet):
     queryset = ContactInformationProfile.objects.all()
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_queryset(self):
+        return get_object_or_404(ContactInformationProfile, profile=self.request.user.profile)
+
     def get_serializer_class(self):
         if self.action in ['create', 'update', 'partial_update']:
             return ContactInformationProfileCreateSerializer
@@ -226,6 +237,10 @@ class EducationQualificationProfileViewSet(viewsets.ModelViewSet):
     queryset = EducationQualificationProfile.objects.all()
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_queryset(self):
+        return get_object_or_404(EducationQualificationProfile, profile=self.request.user.profile)
+
+
     def get_serializer_class(self):
         if self.action in ['create', 'update', 'partial_update']:
             return EducationQualificationProfileCreateSerializer
@@ -239,6 +254,10 @@ class EducationQualificationProfileViewSet(viewsets.ModelViewSet):
 class ParentProfileViewSet(viewsets.ModelViewSet):
     queryset = ParentProfile.objects.all()
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return get_object_or_404(ParentProfile, profile=self.request.user.profile)
+
 
     def get_serializer_class(self):
         if self.action in ['create', 'update', 'partial_update']:
