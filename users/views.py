@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework import permissions
 from rest_framework.response import Response
-from .serializers import LoginSerializer,ChangePasswordSerializer,UserSerializer
+from .serializers import LoginSerializer,ChangePasswordSerializer,UserSerializer,SubjectSerializer,SemesterSerializer, SemesterCreateSerializer, CourseCreateSerializer, CourseSerializer, PersonalProfileSerializer,ParentProfileSerializer,ParentProfileCreateSerializer,EducationQualificationProfileCreateSerializer,EducationQualificationProfileSerializer,ContactInformationProfileCreateSerializer,ContactInformationProfile,ContactInformationProfileSerializer,AdmissionProfileCreateSerializer,AdmissionProfileSerializer, PersonalProfileCreateSerializer
 from rest_framework import status
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import authenticate, login, logout
@@ -9,6 +9,9 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from django.contrib.auth.models import User
 from django.http import Http404
+from .models import Semester,Subject,Courses, PersonalProfile, AdmissionProfile, ContactInformationProfile, EducationQualificationProfile, ParentProfile
+from django.shortcuts import get_object_or_404,get_list_or_404
+from rest_framework import viewsets
 
 class LoginView(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -82,3 +85,144 @@ class UserViewSet(viewsets.ModelViewSet):
         user_data = self.get_serializer(user).data
         return Response(user_data)
     
+
+class SubjectAPI(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self,request):
+        serializer= SubjectSerializer(
+            data= request.data
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    def delete(self, request, pk):
+        instance=  get_object_or_404(Subject, pk=pk)
+        instance.delete()
+        return Response({'detail': 'OK'}, status=status.HTTP_204_NO_CONTENT)
+    
+    def update(self, request, pk):
+        instance= get_object_or_404(Subject, pk=pk)
+        serializer= SemesterCreateSerializer(
+            instance=instance,
+            data=request.data,
+            partial=True
+        )
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
+
+    
+
+
+class SemesterViewSet(viewsets.ModelViewSet):
+    queryset= Semester.objects.all()
+    serializer_class= SemesterSerializer
+    permission_classes= [permissions.IsAuthenticated,]
+
+    def create(self, request):
+        serializer= SemesterCreateSerializer(
+            data=request.data
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance= self.get_object()
+        serializer = SemesterCreateSerializer(
+            instance,
+            data=request.data,
+            partial=partial
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    
+    def destroy(self, request, *args, **kwargs):
+        instance= self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+class CourseViewSet(viewsets.ModelViewSet):
+    queryset= Courses.objects.all()
+    serializer_class= CourseSerializer
+    permission_classes= [permissions.IsAuthenticated,]
+
+    def create(self, request):
+        serializer= CourseCreateSerializer(
+            data=request.data
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance= self.get_object()
+        serializer = CourseCreateSerializer(
+            instance,
+            data=request.data,
+            partial=partial
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    
+    def destroy(self, request, *args, **kwargs):
+        instance= self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+class PersonalProfileViewSet(viewsets.ModelViewSet):
+    queryset = PersonalProfile.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.action in ['create', 'update', 'partial_update']:
+            return PersonalProfileCreateSerializer
+        return PersonalProfileSerializer
+
+class AdmissionProfileViewSet(viewsets.ModelViewSet):
+    queryset = AdmissionProfile.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.action in ['create', 'update', 'partial_update']:
+            return AdmissionProfileCreateSerializer
+        return AdmissionProfileSerializer
+
+class ContactInformationProfileViewSet(viewsets.ModelViewSet):
+    queryset = ContactInformationProfile.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.action in ['create', 'update', 'partial_update']:
+            return ContactInformationProfileCreateSerializer
+        return ContactInformationProfileSerializer
+
+class EducationQualificationProfileViewSet(viewsets.ModelViewSet):
+    queryset = EducationQualificationProfile.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.action in ['create', 'update', 'partial_update']:
+            return EducationQualificationProfileCreateSerializer
+        return EducationQualificationProfileSerializer
+
+class ParentProfileViewSet(viewsets.ModelViewSet):
+    queryset = ParentProfile.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.action in ['create', 'update', 'partial_update']:
+            return ParentProfileCreateSerializer
+        return ParentProfileSerializer
+
+

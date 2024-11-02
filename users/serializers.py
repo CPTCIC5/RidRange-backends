@@ -22,14 +22,14 @@ class SemesterCreateSerializer(serializers.ModelSerializer):
         model= Semester
         fields= ('semester_number', 'start_date', 'subjects')
 
-class SemesterCreateSerializer(serializers.ModelSerializer):
+class SemesterSerializer(serializers.ModelSerializer):
     subjects=  SubjectSerializer(many= True)
     class Meta:
         model= Semester
         fields= ('id','semester_number', 'start_date', 'subjects')
 
 
-class CourseSerializer(serializers.ModelSerializer):
+class CourseCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Courses
         fields = (
@@ -143,7 +143,7 @@ class AdmissionProfileCreateSerializer(serializers.ModelSerializer):
         )
 class AdmissionProfileSerializer(serializers.ModelSerializer):
     profile= ProfileSerializer()
-    course= Courses()
+    course= CourseSerializer()
     class Meta:
         model = AdmissionProfile
         fields = (
