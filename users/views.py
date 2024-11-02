@@ -189,6 +189,11 @@ class PersonalProfileViewSet(viewsets.ModelViewSet):
             return PersonalProfileCreateSerializer
         return PersonalProfileSerializer
 
+    def get_serializer(self, *args, **kwargs):
+        kwargs['context'] = self.get_serializer_context()
+        return super().get_serializer(*args, **kwargs)
+
+
 class AdmissionProfileViewSet(viewsets.ModelViewSet):
     queryset = AdmissionProfile.objects.all()
     permission_classes = [permissions.IsAuthenticated]
@@ -197,6 +202,11 @@ class AdmissionProfileViewSet(viewsets.ModelViewSet):
         if self.action in ['create', 'update', 'partial_update']:
             return AdmissionProfileCreateSerializer
         return AdmissionProfileSerializer
+
+    def get_serializer(self, *args, **kwargs):
+        kwargs['context'] = self.get_serializer_context()
+        return super().get_serializer(*args, **kwargs)
+
 
 class ContactInformationProfileViewSet(viewsets.ModelViewSet):
     queryset = ContactInformationProfile.objects.all()
@@ -207,6 +217,11 @@ class ContactInformationProfileViewSet(viewsets.ModelViewSet):
             return ContactInformationProfileCreateSerializer
         return ContactInformationProfileSerializer
 
+    def get_serializer(self, *args, **kwargs):
+        kwargs['context'] = self.get_serializer_context()
+        return super().get_serializer(*args, **kwargs)
+
+
 class EducationQualificationProfileViewSet(viewsets.ModelViewSet):
     queryset = EducationQualificationProfile.objects.all()
     permission_classes = [permissions.IsAuthenticated]
@@ -216,6 +231,11 @@ class EducationQualificationProfileViewSet(viewsets.ModelViewSet):
             return EducationQualificationProfileCreateSerializer
         return EducationQualificationProfileSerializer
 
+    def get_serializer(self, *args, **kwargs):
+        kwargs['context'] = self.get_serializer_context()
+        return super().get_serializer(*args, **kwargs)
+
+
 class ParentProfileViewSet(viewsets.ModelViewSet):
     queryset = ParentProfile.objects.all()
     permission_classes = [permissions.IsAuthenticated]
@@ -224,5 +244,9 @@ class ParentProfileViewSet(viewsets.ModelViewSet):
         if self.action in ['create', 'update', 'partial_update']:
             return ParentProfileCreateSerializer
         return ParentProfileSerializer
+
+    def get_serializer(self, *args, **kwargs):
+        kwargs['context'] = self.get_serializer_context()
+        return super().get_serializer(*args, **kwargs)
 
 

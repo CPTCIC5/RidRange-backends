@@ -255,5 +255,3 @@ class UserSemesterData(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.semester.name}"
 """
-#user phone number is not same as father phone no, , 
-# emergency_contact != user.contact but could be father's or mother's number 

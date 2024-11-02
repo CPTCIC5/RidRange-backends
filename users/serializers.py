@@ -124,6 +124,10 @@ class PersonalProfileCreateSerializer(serializers.ModelSerializer):
         model= PersonalProfile
         fields = ('title','mobile_number','gender','aadhar_card_number','pan_number','differently_abled','dob','caste','state','aadhar_card_file','pan_card_file')
 
+    def create(self, validated_data):
+        return PersonalProfile.objects.create(profile= self.context['request'].user.profile ,**validated_data)
+
+
 class PersonalProfileSerializer(serializers.ModelSerializer):
     profile= ProfileSerializer()
     class Meta:
@@ -141,6 +145,11 @@ class AdmissionProfileCreateSerializer(serializers.ModelSerializer):
             'admission_type',
             'admission_academic_year'
         )
+
+    def create(self, validated_data):
+        return AdmissionProfile.objects.create(profile= self.context['request'].user.profile ,**validated_data)
+    
+
 class AdmissionProfileSerializer(serializers.ModelSerializer):
     profile= ProfileSerializer()
     course= CourseSerializer()
@@ -171,6 +180,10 @@ class ContactInformationProfileCreateSerializer(serializers.ModelSerializer):
             'district',
             'pincode'
         )
+
+    def create(self, validated_data):
+        return ContactInformationProfile.objects.create(profile= self.context['request'].user.profile ,**validated_data)
+    
 
 class ContactInformationProfileSerializer(serializers.ModelSerializer):
     profile= ProfileSerializer()
@@ -211,6 +224,9 @@ class EducationQualificationProfileCreateSerializer(serializers.ModelSerializer)
             'school_name_12th',
             'result_file_12th'
         )
+
+    def create(self, validated_data):
+        return EducationQualificationProfile.objects.create(profile= self.context['request'].user.profile ,**validated_data)
 
 class EducationQualificationProfileSerializer(serializers.ModelSerializer):
     profile= ProfileSerializer()
@@ -254,6 +270,10 @@ class ParentProfileCreateSerializer(serializers.ModelSerializer):
             'relation_type',
             'guardian_mobile_number'
         )
+
+    def create(self, validated_data):
+        return ParentProfile.objects.create(profile= self.context['request'].user.profile ,**validated_data)
+    
 
 class ParentProfileSerializer(serializers.ModelSerializer):
     profile= ProfileSerializer()
