@@ -243,16 +243,3 @@ class ParentProfile(models.Model):
 
     def __str__(self):
         return str(self.profile)
-
-
-
-# authenticate: aadhar, pan, phone(if possible), dob must be valid.
-# add: personal payment gateway on fee section, courses wise fee structure, add sem wise subjects of all courses while adding a course 
-class UserSemesterData(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
-    gpa = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
-    credits_earned = models.IntegerField(null=True, blank=True)
-
-    def __str__(self):
-        return f"{self.user.username} - {self.semester.name}"
