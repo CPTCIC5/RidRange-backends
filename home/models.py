@@ -16,20 +16,24 @@ class mseResult(models.Model):
     result_day= models.DateTimeField()
     
 
-    #class Meta:
-    #    unique_together= ['mse_number','course','semester']
 
     def __str__(self):
         return f" {self.course}- {self.semester}- {self.mse_number}"
+    
+    class Meta:
+        verbose_name='mseResult'
+        verbose_name_plural= 'mseResult'
 
 class mseMarks(models.Model):
     profile= models.ForeignKey(Profile, on_delete=models.CASCADE)
-    course= models.ForeignKey(mseResult, on_delete=models.CASCADE)
     subject= models.ForeignKey(Subject, on_delete=models.CASCADE)
     maximum_marks= models.IntegerField()
     obtained_marks= models.IntegerField()
 
 
     def __str__(self):
-        return f" {self.profile}- {self.course}- {self.subject}- {self.maximum_marks}- {self.obtained_marks}"
-
+        return f" {self.profile}- {self.subject}- {self.maximum_marks}- {self.obtained_marks}"
+    
+    class Meta:
+        verbose_name= 'mseMarks'
+        verbose_name_plural= 'mseMarks'
